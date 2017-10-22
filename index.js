@@ -66,26 +66,24 @@ function handleMessage(sender_psid, received_message) {
     
     // Checks if the message contains text
     if (received_message.text) {    
-      // Create the payload for a basic text message, which
-      // will be added to the body of our request to the Send API
-      
-    var messageText = received_message.text;
-    var responseText = "";
+        // Create the payload for a basic text message, which
+        // will be added to the body of our request to the Send API
+        
+        var messageText = received_message.text;
+        var responseText = "";
 
-    response = {
-        "text" : ``
+        if(!messageText.includes("to")){
+            responseText = "Sure! Give me the address";
+        } else {
+            responseText = "Here are the directions";
+        }
+    
+        response.text = responseText;
+
+        response = {
+            "text" : ``
+        }
     }
-
-    if(!messageText.includes("to")){
-        responseText = "Sure! Give me the address";
-    } else {
-        responseText = "Here are the directions";
-    }
-
-    response.text = responseText;
-
-    callSendAPI(sender_psid, response);
-}
 
     // Send the response message
     callSendAPI(sender_psid, response);    
