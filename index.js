@@ -1,7 +1,9 @@
 const 
     express = require('express'),
     bodyParser = require('body-parser'),
-    app = express();
+    app = express(),
+    token = process.env.FB_VERIFY_TOKEN,
+    access = process.env.FB_ACCESS_TOKEN;
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -13,7 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/webhook/', (req, res) => {
-    if(req.query['hub.verify_token'] === 'SAFEPATH') {
+    if(req.query['hub.verify_token'] === token) {
         res.send(req.query['hub.challenge'])
     }
     res.send('No entry');
@@ -21,11 +23,22 @@ app.get('/webhook/', (req, res) => {
 
 app.post('/webhook', (req, res) => {
 
-    let body = req.body;
+    var body = req.body;
 
     if(body.object == 'page') {
 
         body.entry.forEach(function(entry) {
+            var pageID = entry.ID;
+            var timeOfEvnt = entry.time;
+
+            entry.messaging.forEach(event => {
+                if(event.message) {
+                    receivedMessage(event);
+                } else {
+                    console.log("Webhook received unknown event: ", event);
+                }
+            });
+
             let webhookEvent = entry.messaging[0];
             console.log(webhookEvent);
         });
