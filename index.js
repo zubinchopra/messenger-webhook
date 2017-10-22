@@ -72,7 +72,7 @@ function handleMessage(sender_psid, received_message) {
       var messageText = received_message.text;
 
       response = {
-        "text": `You sent the message:` + messageText + `. Now send me an attachment!`
+        "text": `You sent the message:` + messageText
       }
     }
 
