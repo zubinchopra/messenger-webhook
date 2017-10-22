@@ -19,23 +19,23 @@ app.get('/webhook/', (req, res) => {
     res.send('No entry');
 });
 
-// app.post('/webhook', (req, res) => {
+app.post('/webhook', (req, res) => {
 
-//     let body = req.body;
+    let body = req.body;
 
-//     if(body.object == 'page') {
+    if(body.object == 'page') {
 
-//         body.entry.forEach(function(entry) {
-//             let webhookEvent = entry.messaging[0];
-//             console.log(webhookEvent);
-//         });
+        body.entry.forEach(function(entry) {
+            let webhookEvent = entry.messaging[0];
+            console.log(webhookEvent);
+        });
 
-//         res.status(200).send('EVENT_RECIEVED');
-//     } else {
-//         res.sendStatus(404);
-//     }
+        res.status(200).send('EVENT_RECIEVED');
+    } else {
+        res.sendStatus(404);
+    }
 
-// });
+});
 
 
 
