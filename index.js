@@ -21,34 +21,89 @@ app.get('/webhook/', (req, res) => {
     res.send('No entry');
 });
 
-app.post('/webhook', (req, res) => {
-
-    var body = req.body;
-
-    if(body.object == 'page') {
-
+// Accepts POST requests at /webhook endpoint
+app.post('/webhook', (req, res) => {  
+    
+      // Parse the request body from the POST
+      let body = req.body;
+    
+      // Check the webhook event is from a Page subscription
+      if (body.object === 'page') {
+    
         body.entry.forEach(function(entry) {
-            var pageID = entry.ID;
-            var timeOfEvnt = entry.time;
-
-            entry.messaging.forEach(event => {
-                if(event.message) {
-                    receivedMessage(event);
-                } else {
-                    console.log("Webhook received unknown event: ", event);
-                }
-            });
-
-            let webhookEvent = entry.messaging[0];
-            console.log(webhookEvent);
+    
+          // Gets the body of the webhook event
+          let webhook_event = entry.messaging[0];
+          console.log(webhook_event);
+    
+    
+          // Get the sender PSID
+          let sender_psid = webhook_event.sender.id;
+          console.log('Sender ID: ' + sender_psid);
+    
+          // Check if the event is a message or postback and
+          // pass the event to the appropriate handler function
+          if (webhook_event.message) {
+            handleMessage(sender_psid, webhook_event.message);        
+          } else if (webhook_event.postback) {
+            
+            handlePostback(sender_psid, webhook_event.postback);
+          }
+          
         });
-
-        res.status(200).send('EVENT_RECIEVED');
-    } else {
+        // Return a '200 OK' response to all events
+        res.status(200).send('EVENT_RECEIVED');
+    
+      } else {
+        // Return a '404 Not Found' if event is not from a page subscription
         res.sendStatus(404);
-    }
-
+      }
+    
 });
+
+function handleMessage(sender_psid, received_message) {
+    let response;
+    
+    // Checks if the message contains text
+    if (received_message.text) {    
+      // Create the payload for a basic text message, which
+      // will be added to the body of our request to the Send API
+      response = {
+        "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
+      }
+    } else if (received_message.attachments) {
+      // Get the URL of the message attachment
+      let attachment_url = received_message.attachments[0].payload.url;
+      response = {
+        "attachment": {
+          "type": "template",
+          "payload": {
+            "template_type": "generic",
+            "elements": [{
+              "title": "Is this the right picture?",
+              "subtitle": "Tap a button to answer.",
+              "image_url": attachment_url,
+              "buttons": [
+                {
+                  "type": "postback",
+                  "title": "Yes!",
+                  "payload": "yes",
+                },
+                {
+                  "type": "postback",
+                  "title": "No!",
+                  "payload": "no",
+                }
+              ],
+            }]
+          }
+        }
+      }
+    } 
+    
+    // Send the response message
+    callSendAPI(sender_psid, response);    
+}
 
 
 
