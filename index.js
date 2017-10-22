@@ -15,9 +15,6 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-app.get('/getdata', (req, res))
-// get data database that we logged
-
 app.get('/webhook/', (req, res) => {
     if(req.query['hub.verify_token'] === token) {
         res.send(req.query['hub.challenge'])
