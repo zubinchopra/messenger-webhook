@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/webhook/', (req, res) => {
-    if(req.query['hub.challenge'] === token) {
+    if(req.query['hub.challenge'] == token) {
         res.send(req.query['hub.challenge'])
     }
     res.send('No entry');
