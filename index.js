@@ -74,18 +74,16 @@ function handleMessage(sender_psid, received_message) {
         // will be added to the body of our request to the Send API
         
         var messageText = received_message.text;
-        var responseText = "";
 
         if(messageText.includes("hey" || "hi")) {
-            responseText = "Hey there! How can I help you?"
+            response.text = "Hey there! How can I help you?"
         }
         else if(!messageText.includes("to home") || !messageText.includes("go home")){
             response.text = "Here are the directions";
         }
         else {
-            responseText = "Sure! Give me the address";
+            response.text = "Sure! Give me the address";
         }
-        response.text = responseText;
     }
 
     // Send the response message
