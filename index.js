@@ -15,6 +15,9 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
+app.get('/getdata', (req, res))
+// get data database that we logged
+
 app.get('/webhook/', (req, res) => {
     if(req.query['hub.verify_token'] === token) {
         res.send(req.query['hub.challenge'])
@@ -75,11 +78,11 @@ function handleMessage(sender_psid, received_message) {
         
         var messageText = received_message.text;
 
-        if(messageText.includes("hey" || "hi")) {
+        if(messageText.includes("hey" || "hi" || "Hey" || "Hi")) {
             response.text = "Hey there! How can I help you?"
         }
         else if(messageText.includes("home")){
-            response.text = "Here are the directions";
+            response.text = "Here are the directions:" + "localhost:8080";
         }
         else {
             response.text = "Sure! Give me the address";
@@ -87,7 +90,9 @@ function handleMessage(sender_psid, received_message) {
     }
 
     // Send the response message
-    callSendAPI(sender_psid, response);    
+    callSendAPI(sender_psid, response);
+    // log it to the database
+         
 }
 
 function handlePostback(sender_psid, received_postback) {
