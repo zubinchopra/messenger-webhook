@@ -72,17 +72,15 @@ function handleMessage(sender_psid, received_message) {
         var messageText = received_message.text;
         var responseText = "";
 
-        if(!messageText.includes("to")){
+        if(messageText.includes("hey" || "hi")) {
+            responseText = "Hey there! How can I help you?"
+        }
+        else if(!messageText.includes("to")) {
             responseText = "Sure! Give me the address";
         } else {
             responseText = "Here are the directions";
         }
-    
         response.text = responseText;
-
-        response = {
-            "text" : ``
-        }
     }
 
     // Send the response message
