@@ -78,7 +78,7 @@ function handleMessage(sender_psid, received_message) {
         if(messageText.includes("hey" || "hi")) {
             response.text = "Hey there! How can I help you?"
         }
-        else if(!messageText.includes("to home") || !messageText.includes("go home")){
+        else if(!messageText.includes("home")){
             response.text = "Here are the directions";
         }
         else {
