@@ -78,8 +78,11 @@ function handleMessage(sender_psid, received_message) {
 
     if(!messageText.includes("to")){
         responseText = "Sure! Give me the address";
-        response.text = responseText;
+    } else {
+        responseText = "Here are the directions";
     }
+
+    response.text = responseText;
 
     callSendAPI(sender_psid, response);
 }
