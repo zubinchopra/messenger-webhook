@@ -64,7 +64,7 @@ app.post('/webhook', (req, res) => {
 function handleMessage(sender_psid, received_message) {
     let response;
 
-    var response = {
+    response = {
         "text": ``
     }
     
