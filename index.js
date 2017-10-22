@@ -63,6 +63,10 @@ app.post('/webhook', (req, res) => {
 
 function handleMessage(sender_psid, received_message) {
     let response;
+
+    var response = {
+        "text": ``
+    }
     
     // Checks if the message contains text
     if (received_message.text) {    
