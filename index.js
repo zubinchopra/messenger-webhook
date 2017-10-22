@@ -71,12 +71,6 @@ function handleMessage(sender_psid, received_message) {
       
       var messageText = received_message.text;
       var responseText = "";
-      do {
-        response = {
-            "text": `Sure! Provide the address please`
-        }
-        callSendAPI(sender_psid, response);
-      } while (!(messageText.includes("directions") && messageText.includes("to")));
       response = {
         "text": `You sent the message:` + messageText
       }
